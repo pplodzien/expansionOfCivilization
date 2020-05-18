@@ -10,12 +10,10 @@ public class World {
     private Map<Point, Area> world;
     private List<City> cities;
 
-
-    public World(Map<Point, Area> world, List<City> cities){
-        this.world = world;
+    public World(Map<Point, Area> areaMap, List<City> cities){
+        this.world = areaMap;
         this.cities = cities;
     }
-
 
     public Map<Point, Area> getWorld() {
         return world;

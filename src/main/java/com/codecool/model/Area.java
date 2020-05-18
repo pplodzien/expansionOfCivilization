@@ -1,69 +1,39 @@
 package com.codecool.model;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Area {
 
     private long areaPopulation;
-    private final long minPopulation;
-    private final long maxPopulation;
-    private City occupiedBy;
     private AreaType areaType;
+    private Optional<City> occupiedBy;
+
+    private long minPopulation;
+    private long maxPopulation;
     private long water;
     private long wood;
     private long steel;
     private long waterRestore;
     private long woodRestore;
     private long steelRestore;
+    private Random rand = new Random();
+    static final int MIN_INITIAL_RESOURCE = 0;
+    static final int MAX_INITIAL_RESOURCE = 10;
 
-    public Area(long areaPopulation, long minPopulation,
-                long maxPopulation, City occupiedBy,
-                AreaType areaType, long water, long wood,
-                long steel, long waterRestore, long woodRestore,
-                long steelRestore) {
-
-        this.areaPopulation = areaPopulation;
-        this.minPopulation = minPopulation;
-        this.maxPopulation = maxPopulation;
-        this.occupiedBy = occupiedBy;
-        this.areaType = areaType;
-        this.water = water;
-        this.wood = wood;
-        this.steel = steel;
-        this.waterRestore = waterRestore;
-        this.woodRestore = woodRestore;
-        this.steelRestore = steelRestore;
+    public Area() {
+        setAreaAttributes();
     }
 
     public long getAreaPopulation() {
         return areaPopulation;
     }
 
-
     public void setAreaPopulation(long areaPopulation) {
         this.areaPopulation = areaPopulation;
-    }
-
-    public long getMinPopulation() {
-        return minPopulation;
-    }
-
-    public long getMaxPopulation() {
-        return maxPopulation;
-    }
-
-    public City getOccupiedBy() {
-        return occupiedBy;
-    }
-
-    public void setOccupiedBy(City occupiedBy) {
-        this.occupiedBy = occupiedBy;
-    }
-
-    public AreaType getAreaType() {
-        return areaType;
-    }
-
-    public void setAreaType(AreaType areaType) {
-        this.areaType = areaType;
     }
 
     public long getWater() {
@@ -90,27 +60,38 @@ public class Area {
         this.steel = steel;
     }
 
-    public long getWaterRestore() {
-        return waterRestore;
+    private void setAreaAttributes() {
+        this.occupiedBy = Optional.empty();
+        List<AreaType> areaTypes = Arrays.asList(AreaType.values());
+        this.areaType = areaTypes.get(rand.nextInt(areaTypes.size()));
+        this.water = rand.nextInt((MAX_INITIAL_RESOURCE - MIN_INITIAL_RESOURCE) + 1) + MIN_INITIAL_RESOURCE;
+        this.wood = rand.nextInt((MAX_INITIAL_RESOURCE - MIN_INITIAL_RESOURCE) + 1) + MIN_INITIAL_RESOURCE;
+        this.steel = rand.nextInt((MAX_INITIAL_RESOURCE - MIN_INITIAL_RESOURCE) + 1) + MIN_INITIAL_RESOURCE;
+        this.minPopulation = areaType.minPopulation;
+        this.maxPopulation = areaType.maxPopulation;
+        this.waterRestore = ThreadLocalRandom.current().nextLong(areaType.waterRestoreLowerLimit, areaType.waterRestoreHigherLimit);
+        this.woodRestore = ThreadLocalRandom.current().nextLong(areaType.woodRestoreLowerLimit, areaType.woodRestoreHigherLimit);
+        this.steelRestore = ThreadLocalRandom.current().nextLong(areaType.steelRestoreLowerLimit, areaType.steelRestoreHigherLimit);
     }
 
-    public void setWaterRestore(long waterRestore) {
-        this.waterRestore = waterRestore;
+    public void setOccupiedBy(Optional<City> occupiedBy) {
+        this.occupiedBy = occupiedBy;
     }
 
-    public long getWoodRestore() {
-        return woodRestore;
-    }
-
-    public void setWoodRestore(long woodRestore) {
-        this.woodRestore = woodRestore;
-    }
-
-    public long getSteelRestore() {
-        return steelRestore;
-    }
-
-    public void setSteelRestore(long steelRestore) {
-        this.steelRestore = steelRestore;
+    @Override
+    public String toString() {
+        return "Area{" +
+                "areaPopulation = " + areaPopulation +
+                ", areaType = " + areaType +
+                ", occupiedBy = " + occupiedBy.get() +
+                ", minPopulation = " + minPopulation +
+                ", maxPopulation = " + maxPopulation +
+                ", water = " + water +
+                ", wood = " + wood +
+                ", steel = " + steel +
+                ", waterRestore = " + waterRestore +
+                ", woodRestore = " + woodRestore +
+                ", steelRestore = " + steelRestore +
+                '}';
     }
 }

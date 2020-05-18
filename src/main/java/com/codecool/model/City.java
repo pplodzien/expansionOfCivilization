@@ -10,6 +10,13 @@ public class City {
     private long wood;
     private long steel;
 
+    public City(String name, List<Area> areas, long water, long wood, long steel) {
+        this.name = name;
+        this.areas = areas;
+        this.water = water;
+        this.wood = wood;
+        this.steel = steel;
+    }
 
     public String getName() {
         return name;
@@ -54,6 +61,11 @@ public class City {
 
     public void setSteel(long steel) {
         this.steel = steel;
+    }
+
+    @Override
+    public String toString() {
+        return "City name = " + name;
     }
 }
 
